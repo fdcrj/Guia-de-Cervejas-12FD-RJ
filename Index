@@ -1,0 +1,829 @@
+```html
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guia de Cervejas e Confrarias Artesanais do Rio - 12º FDCRJ</title>
+  <style>
+/* Variáveis para Tema Escuro */
+html[data-theme="dark"] {
+  --bg: #0a141d;
+  --card: #122230;
+  --ink: #e6f1f8;
+  --muted: #8fa2b3;
+  --line: #1e354a;
+  --brand: #f39c12;
+  --brand-ink: #fdebd0;
+  --accent: #48cae4;
+  --header-bg: linear-gradient(135deg, #07121b 0%, #0f2b48 60%, #b35400 100%);
+  --shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+/* Variáveis para Tema Claro */
+html[data-theme="light"] {
+  --bg: #f4f7f6;
+  --card: #ffffff;
+  --ink: #1a252f;
+  --muted: #627282;
+  --line: #cbd5e1;
+  --brand: #d35400;
+  --brand-ink: #ffffff;
+  --accent: #0284c7;
+  --header-bg: linear-gradient(135deg, #1e3a5f 0%, #2b5886 60%, #d35400 100%);
+  --shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.5; -webkit-text-size-adjust: 100%; transition: background-color 0.3s, color 0.3s; }
+a { color: var(--brand); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.wrap { max-width: 1180px; margin: auto; padding: 0 16px; }
+
+/* Header com Marca d'água da imagem logo fdcrj.jpg */
+header { background: var(--header-bg); color: #fff; padding: 30px 0 90px; position: relative; overflow: hidden; }
+header::after {
+  content: "";
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  width: 260px;
+  height: 260px;
+  background-image: url('logo fdcrj.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.kicker { letter-spacing: 0.16em; font-size: 0.75rem; font-weight: 800; color: #fceae6; text-transform: uppercase; }
+h1 { font-size: clamp(2rem, 5vw, 3.2rem); margin: 6px 0 6px; line-height: 1.1; font-weight: 800; }
+.sub { color: #d0e1fd; max-width: 72ch; margin: 0; font-size: 0.95rem; opacity: 0.95; line-height: 1.6; }
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+
+/* Botões da barra superior */
+.btn-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.theme-btn { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); color: #fff; border-radius: 999px; padding: 6px 14px; font-size: 0.82rem; font-weight: 700; cursor: pointer; backdrop-filter: blur(4px); transition: all 0.2s; }
+.theme-btn:hover { background: rgba(255, 255, 255, 0.28); }
+.user-info { font-size: 0.82rem; color: #fceae6; margin-top: 4px; display: none; background: rgba(0,0,0,0.2); padding: 4px 12px; border-radius: 8px; width: fit-content; }
+
+.stats { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.stat { background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 14px; padding: 10px 18px; min-width: 108px; backdrop-filter: blur(4px); }
+.stat b { display: block; font-size: 1.6rem; line-height: 1; }
+.stat small { color: #f2f7fc; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+
+main { margin-top: -62px; padding-bottom: 56px; }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 20px; box-shadow: var(--shadow); }
+.search-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.search { flex: 1 1 280px; height: 52px; border: 2px solid var(--line); border-radius: 14px; padding: 0 18px; font-size: 1rem; background: var(--card); color: var(--ink); transition: border-color 0.2s; }
+.search:focus, select:focus, button:focus-visible { outline: 3px solid color-mix(in srgb, var(--brand) 35%, transparent); border-color: var(--brand); }
+.sel { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 14px; }
+.field label { display: block; font-size: 0.7rem; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 5px; }
+select { width: 100%; height: 44px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); color: var(--ink); padding: 0 10px; font-size: 0.92rem; cursor: pointer; }
+.quick { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; align-items: center; }
+.pill { border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 8px 14px; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.pill:hover { border-color: var(--brand); color: var(--brand); }
+.pill[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: #fff; }
+.clear { margin-left: auto; border: 0; background: color-mix(in srgb, var(--brand) 15%, transparent); color: var(--brand-ink); border-radius: 999px; padding: 8px 16px; font-weight: 800; cursor: pointer; font-size: 0.82rem; }
+.clear:hover { background: color-mix(in srgb, var(--brand) 25%, transparent); }
+
+.bar { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin: 26px 4px 14px; flex-wrap: wrap; }
+.bar h2 { margin: 0; font-size: 1.2rem; font-weight: 800; }
+.bar span { font-size: 0.88rem; color: var(--muted); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 16px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; position: relative; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 14px 28px rgba(15, 43, 72, 0.15); }
+.stripe { height: 8px; background: var(--c, var(--brand)); }
+.body { padding: 16px; display: flex; flex-direction: column; flex: 1; }
+.tag { display: inline-block; background: color-mix(in srgb, var(--c, var(--brand)) 18%, transparent); color: var(--c, var(--brand)); border: 1px solid color-mix(in srgb, var(--c, var(--brand)) 35%, transparent); border-radius: 999px; padding: 4px 10px; font-size: 0.68rem; font-weight: 800; width: fit-content; }
+.card h3 { margin: 10px 34px 4px 0; font-size: 1.1rem; line-height: 1.25; font-weight: 700; }
+.meta { font-size: 0.8rem; color: var(--muted); font-weight: 600; margin-top: 4px; }
+.desc { font-size: 0.88rem; margin: 10px 0 14px; color: var(--ink); opacity: 0.9; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; flex: 1; }
+.owner { font-size: 0.78rem; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 10px; }
+.fav { position: absolute; top: 12px; right: 12px; border: 0; background: transparent; font-size: 1.3rem; line-height: 1; cursor: pointer; filter: grayscale(1); opacity: 0.4; padding: 4px; }
+.fav[aria-pressed="true"] { filter: none; opacity: 1; }
+.empty { grid-column: 1 / -1; text-align: center; background: var(--card); border: 2px dashed var(--line); border-radius: 16px; padding: 50px 20px; color: var(--muted); }
+
+.modal { position: fixed; inset: 0; background: rgba(7, 20, 33, 0.75); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 100; }
+.modal.open { display: flex; }
+.dialog { width: min(620px, 100%); max-height: 90vh; overflow: auto; background: var(--card); border-radius: 22px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); }
+.inside { padding: 22px; }
+.x { float: right; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 50%; width: 38px; height: 38px; font-size: 20px; cursor: pointer; }
+#mn { margin: 10px 0 2px; font-size: 1.5rem; font-weight: 800; }
+.details { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
+.detail { background: color-mix(in srgb, var(--ink) 5%, transparent); border-radius: 12px; padding: 11px; }
+.detail b { display: block; color: var(--muted); text-transform: uppercase; font-size: 0.66rem; letter-spacing: 0.07em; margin-bottom: 3px; }
+#mdesc { line-height: 1.6; font-size: 0.95rem; margin-bottom: 16px; }
+.notes { width: 100%; min-height: 90px; border: 1px solid var(--line); border-radius: 12px; padding: 12px; font: inherit; background: var(--bg); color: var(--ink); resize: vertical; }
+.rate { display: flex; gap: 6px; align-items: center; margin: 10px 0; }
+.star { border: 0; background: transparent; font-size: 1.6rem; cursor: pointer; filter: grayscale(1); opacity: 0.3; padding: 0 2px; }
+.star.on { filter: none; opacity: 1; }
+
+footer { border-top: 1px solid var(--line); padding: 26px 0 36px; color: var(--muted); font-size: 0.85rem; text-align: center; margin-top: 40px; }
+footer p { margin: 6px 0; line-height: 1.5; }
+.toast { position: fixed; left: 50%; bottom: 22px; transform: translate(-50%, 120%); background: var(--ink); color: var(--bg); padding: 11px 22px; border-radius: 999px; font-size: 0.86rem; font-weight: 700; transition: transform 0.25s ease-out; z-index: 200; box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
+.toast.show { transform: translate(-50%, 0); }
+
+@media(max-width: 900px) { .sel { grid-template-columns: repeat(2, 1fr); } }
+@media(max-width: 560px) { .sel { grid-template-columns: 1fr; } .grid { grid-template-columns: 1fr; } .details { grid-template-columns: 1fr; } .clear { margin-left: 0; width: 100%; } }
+@media print { header, .panel, .quick, footer, .fav { display: none !important; } .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; } main { margin-top: 10px; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="topbar">
+      <span class="kicker">12º Festival Das Confrarias RJ</span>
+      <div class="btn-group">
+        <button id="googleAuthBtn" class="theme-btn">🔑 Entrar com Google</button>
+        <button id="themeToggle" class="theme-btn">🌙 Modo Escuro</button>
+      </div>
+    </div>
+    <div id="userInfo" class="user-info"></div>
+    <h1>Guia de Cervejas Artesanais</h1>
+    <p class="sub">Suas anotações e avaliações ficam salvas localmente no seu navegador ou sincronizadas na nuvem com seu login do Google. Explore todas as produções inscritas no 12º FDCRJ. Filtre por confraria, estilo, categoria ou ingrediente, avalie com estrelas e salve suas anotações de degustação!</p>
+    <div class="stats">
+      <div class="stat"><b id="sBeers">0</b><small>cervejas</small></div>
+      <div class="stat"><b id="sConf">0</b><small>confrarias</small></div>
+      <div class="stat"><b id="sStyles">0</b><small>estilos</small></div>
+      <div class="stat"><b id="sFav">0</b><small>favoritas</small></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="panel">
+    <div class="search-row">
+      <input type="search" id="search" class="search" placeholder="Buscar por cerveja, estilo, confraria, ingrediente...">
+    </div>
+    <div class="sel">
+      <div class="field">
+        <label for="fConf">Confraria</label>
+        <select id="fConf"><option value="">Todas as Confrarias</option></select>
+      </div>
+      <div class="field">
+        <label for="fCat">Categoria</label>
+        <select id="fCat"><option value="">Todas as Categorias</option></select>
+      </div>
+      <div class="field">
+        <label for="fFam">Família de Estilo</label>
+        <select id="fFam"><option value="">Todas as Famílias</option></select>
+      </div>
+      <div class="field">
+        <label for="fEstilo">Estilo BJCP</label>
+        <select id="fEstilo"><option value="">Todos os Estilos</option></select>
+      </div>
+      <div class="field">
+        <label for="fSort">Ordenar Por</label>
+        <select id="fSort">
+          <option value="">Padrão (Nome)</option>
+          <option value="abv_desc">Maior Teor Alcoólico (ABV)</option>
+          <option value="abv_asc">Menor Teor Alcoólico (ABV)</option>
+          <option value="ibu_desc">Maior Amargor (IBU)</option>
+          <option value="ibu_asc">Menor Amargor (IBU)</option>
+        </select>
+      </div>
+    </div>
+    <div class="quick">
+      <button class="pill" data-filter="fav">⭐ Só favoritas</button>
+      <button class="pill" data-filter="rio">🌿 Rota Estilo Rio</button>
+      <button class="pill" data-filter="bitter">🇬🇧 Rota Bitters</button>
+      <button class="pill" data-filter="ipa">🍺 Rota IPAs & Lupuladas</button>
+      <button class="pill" data-filter="zero">🚫 Rota Sem Álcool</button>
+      <button class="clear" id="btnClear">Limpar filtros</button>
+    </div>
+  </div>
+
+  <div class="bar">
+    <h2>Catálogo de Cervejas</h2>
+    <span id="resultCount">Exibindo cervejas</span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</main>
+
+<div class="modal" id="modal">
+  <div class="dialog">
+    <div class="inside">
+      <button class="x" id="btnCloseModal">&times;</button>
+      <h2 id="mn">Nome da Cerveja</h2>
+      <p id="mdesc"></p>
+      <div class="details"></div>
+      
+      <h3>Sua Avaliação</h3>
+      <div class="rate"></div>
+      
+      <h3>Anotações Pessoais</h3>
+      <textarea class="notes" placeholder="Adicione suas notas de degustação aqui..."></textarea>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>Guia interativo Oficial do 12º Festival de Confrarias do Rio de Janeiro (12FDCRJ). Suas anotações e avaliações ficam salvas no seu navegador ou na nuvem.</p>
+    <p>Página elaborada por Levi Ciqueira Jr. <a href="https://instagram.com/levicjr" target="_blank">@levicjr</a> (Cocejucana) e atualizada pelo FDCRJ</p>
+    <p><strong>Aprecie com moderação — Se beber, não dirija! Siga <a href="https://instagram.com/fdcrj" target="_blank">@fdcrj</a> no Instagram.</strong></p>
+  </div>
+</footer>
+
+<!-- Aplicação Principal -->
+<script>
+const DATA = [
+  {"confraria": "3CJ (06)", "confrariaNome": "3CJ (06)", "categoria": "Estilo Obrigatório", "responsavel": "3CJ (06)", "cerveja": "Potira Ordinária", "estilo": "Ordinary Bitter", "descricao": "", "familia": "Ales maltadas", "abv": "3,7%", "ibu": "25", "ebc": "16,0"},
+  {"confraria": "3CJ (06)", "confrariaNome": "3CJ (06)", "categoria": "Estilo Livre", "responsavel": "3CJ (06)", "cerveja": "Potira Imperial Stout", "estilo": "Imperial Stout", "descricao": "", "familia": "Escuras tostadas", "abv": "8,5%", "ibu": "60", "ebc": "76,0"},
+  {"confraria": "3CJ (06)", "confrariaNome": "3CJ (06)", "categoria": "Estilo Rio", "responsavel": "3CJ (06)", "cerveja": "Potira Pisco Sour", "estilo": "Não informado", "descricao": "Inspirado no clássico drink chileno Pisco Sour, na base de um Gose, feita através do método kettel sour com lactobacilos para acidicar (ph3,9). Saborizada e aromatizada com cascas de frutas cítricas (limão thaiti, siciliano e mexerica) e dry hopping de lúpulo nectaron.", "familia": "Outros", "abv": "4,5%", "ibu": "8", "ebc": "8,0"},
+  {"confraria": "3CJ (06)", "confrariaNome": "3CJ (06)", "categoria": "Cervejaria Convidada", "responsavel": "Vírus Bier", "cerveja": "Philomena", "estilo": "American IPA", "descricao": "Cerveja de estilo americano, amargor robusto e de personalidade o dulçor alto equilibra o amargor. Frutada aromas e sabores de frutas de caroço, manga, maracujá, mamão, e outras características sensoriais.", "familia": "IPA & Lupuladas", "abv": "6,0%", "ibu": "55", "ebc": "16,0"},
+  {"confraria": "3CJ (06)", "confrariaNome": "3CJ (06)", "categoria": "Cervejas Confrades", "responsavel": "Carlos Matheus", "cerveja": "Dark Ocean", "estilo": "English Porter", "descricao": "Uma cerveja maltada e fácil de beber, visto o baixo corpo e ABV. O sensorial fica por conta dos maltes especiais biscuit, café e carafa I.", "familia": "Escuras tostadas", "abv": "4,0%", "ibu": "40", "ebc": "44,0"},
+  {"confraria": "3CJ (06)", "confrariaNome": "3CJ (06)", "categoria": "Cervejas Confrades", "responsavel": "Vinicius Tabosa", "cerveja": "SIPA", "estilo": "Specialty IPA", "descricao": "Leve e refrescante", "familia": "IPA & Lupuladas", "abv": "3,0%", "ibu": "34", "ebc": "11,0"},
+  {"confraria": "3CJ (06)", "confrariaNome": "3CJ (06)", "categoria": "Cervejas Confrades", "responsavel": "Marlon Amorim", "cerveja": "New Port Cacau IPA com Laranja Vitrificada", "estilo": "American IPA", "descricao": "American IPA com extrato de nibs de Cacau da Plantado e Fermentado por mim no Porto Novo São Gonçalo e extrato de Laranja Bahia Vitrificada.", "familia": "IPA & Lupuladas", "abv": "6,2%", "ibu": "50", "ebc": "33,0"},
+  {"confraria": "3CJ (06)", "confrariaNome": "3CJ (06)", "categoria": "Cervejas Confrades", "responsavel": "Eric", "cerveja": "RAIZ SUBMERSA", "estilo": "Cream Ale", "descricao": "cremosidade e o final seco típicos de uma Cream Ale, coroados por um toque marcante de gengibre fresco", "familia": "Ales claras", "abv": "5,0%", "ibu": "33", "ebc": "10,0"},
+  {"confraria": "3CJ (06)", "confrariaNome": "3CJ (06)", "categoria": "Cervejas Confrades", "responsavel": "Wallace Duarte", "cerveja": "Hells Bells", "estilo": "Munich Helles", "descricao": "Estilo claro alemão com notas suaves de malte que lembram pão branco, cereais e grãos, acompanhadas por um toque sutil floral e herbal de lúpulo", "familia": "Lagers", "abv": "4,8%", "ibu": "16", "ebc": "8,0"},
+  {"confraria": "3CJ (06)", "confrariaNome": "3CJ (06)", "categoria": "Cervejas Confrades", "responsavel": "Cláudio Caju", "cerveja": "Altbier", "estilo": "Altbier", "descricao": "Uma cerveja alemã quase esquecida de cor cobreada e equilibrada com um forte maltado e um belo toque de notas de caramelo.", "familia": "Ales maltadas", "abv": "4,8%", "ibu": "35", "ebc": "35,0"},
+  {"confraria": "3CJ (06)", "confrariaNome": "3CJ (06)", "categoria": "Cervejas Confrades", "responsavel": "Glaumárcio Costa", "cerveja": "Deguste Sante - Blond Carioca", "estilo": "Blonde Ale", "descricao": "Blond Ale com Limão Siciliano e Laranja Bahia. Cítrica e refrescante. Leve, equilibrada, com final seco.Cor Dourada clara, brilhante e espuma branca.", "familia": "Ales claras", "abv": "4,7%", "ibu": "18", "ebc": "4,0"},
+  {"confraria": "3CJ (06)", "confrariaNome": "3CJ (06)", "categoria": "Cervejas Confrades", "responsavel": "Heider Damas", "cerveja": "HD BeeR - Ambar Alert", "estilo": "American Amber Ale", "descricao": "Uma experiência maltada, de cor âmbar, com toque especial do lúpulo columbus. Uma cerveja complexa, porém fácil de beber.", "familia": "Ales maltadas", "abv": "5,0%", "ibu": "33", "ebc": "25,0"},
+  {"confraria": "3CJ (06)", "confrariaNome": "3CJ (06)", "categoria": "Cervejas Confrades", "responsavel": "Gabi Fontoura Nunes", "cerveja": "Gabipa", "estilo": "American IPA", "descricao": "IPA!", "familia": "IPA & Lupuladas", "abv": "6,0%", "ibu": "44", "ebc": "14,0"},
+  {"confraria": "3CJ (06)", "confrariaNome": "3CJ (06)", "categoria": "Cervejas Confrades", "responsavel": "Bezerra", "cerveja": "Trigo amargo", "estilo": "American Wheat Beer", "descricao": "Leve, clara mas turva, amarga na medida.", "familia": "Trigo", "abv": "5,0%", "ibu": "26", "ebc": "8,0"},
+  {"confraria": "3CJ (06)", "confrariaNome": "3CJ (06)", "categoria": "Cervejas Confrades", "responsavel": "Pedro Lemos", "cerveja": "Extra Special Bitch", "estilo": "Best Bitter", "descricao": "Cerveja estilo inglês leve, refrescante com sabor de malte e um amargor que equilibra no paladar.", "familia": "Ales maltadas", "abv": "5,0%", "ibu": "31", "ebc": "24,0"},
+  {"confraria": "3CJ (06)", "confrariaNome": "3CJ (06)", "categoria": "Cervejas Confrades", "responsavel": "Claudio Gomes", "cerveja": "ApaQiuPariu", "estilo": "American Pale Ale", "descricao": "APA Citra", "familia": "Ales claras", "abv": "6,0%", "ibu": "30", "ebc": "14,0"},
+  {"confraria": "ACRL (01)", "confrariaNome": "ACRL (01)", "categoria": "Estilo Obrigatório", "responsavel": "ACRL (01)", "cerveja": "Reclamação Formal", "estilo": "Best Bitter", "descricao": "Cerveja âmbar inglesa de sessão, equilibrada e convidativa. Apresenta um perfil maltado e levemente tostado, com notas de biscoito e caramelo sutil. O amargor é firme na medida, de caráter terroso e floral, conduzindo a um final seco e refrescante. Uma cerveja simples em essência, mas cheia de personalidade — feita para beber devagar ou pedir outra.", "familia": "Ales maltadas", "abv": "3,8%", "ibu": "25", "ebc": "31,0"},
+  {"confraria": "ACRL (01)", "confrariaNome": "ACRL (01)", "categoria": "Estilo Livre", "responsavel": "ACRL (01)", "cerveja": "Red Storm IPA", "estilo": "Specialty IPA: Red IPA", "descricao": "Uma tempestade de aromas e sensações. Intensamente vermelha e vibrante, a Red Storm chega com um marcante aroma floral, seguido por notas cítricas que despertam os sentidos. No primeiro gole, o amargor intenso e cítrico toma conta do paladar, equilibrado pelo caráter maltado da Red IPA. O final é seco, refrescante e persistente, deixando aquela vontade irresistível de mais um gole.", "familia": "IPA & Lupuladas", "abv": "6,5%", "ibu": "50", "ebc": "28,0"},
+  {"confraria": "ACRL (01)", "confrariaNome": "ACRL (01)", "categoria": "Estilo Rio", "responsavel": "ACRL (01)", "cerveja": "Feira Livre", "estilo": "Estilo Rio", "descricao": "Cerveja leve, seca e cristalina, elaborada com caldo de cana fresco e raspas de limão Taiti adicionadas durante a fermentação primária. Aroma de limão evidente, com sutis notas cítricas e tropicais de Centennial e Citra. Refrescante, de baixo amargor e alta drinkability, inspirada na clássica combinação de garapa e limão encontrada nas feiras livres cariocas.", "familia": "Especiais & Frutadas", "abv": "4,7%", "ibu": "15", "ebc": "5,3"},
+  {"confraria": "ACRL (01)", "confrariaNome": "ACRL (01)", "categoria": "Cervejas Confrades", "responsavel": "Geivson e Lecchi", "cerveja": "Hop Barba's", "estilo": "Mixed-Style Beer", "descricao": "Hop Lager clara, limpa e refrescante, com aroma herbal e levemente especiado de Saaz, combinado a notas cítricas, florais e frutadas de Centennial e Citra. Sabor seco e limpo, com amargor moderado l, corpo leve e final crisp, destacando a expressão dos lúpulos.", "familia": "Especiais & Frutadas", "abv": "4,5%", "ibu": "18", "ebc": "5,7"},
+  {"confraria": "ACRL (01)", "confrariaNome": "ACRL (01)", "categoria": "Cervejas Confrades", "responsavel": "Marcus Lafabrika", "cerveja": "Limoneto", "estilo": "Witbier", "descricao": "Witbier clara, leve e refrescante, de coloração amarelo-palha e espuma branca. Aroma intenso e fresco de limão, com notas cítricas que remetem à casca da fruta. Sabor leve, cítrico e equilibrado, com amargor moderado e final seco e refrescante.", "familia": "Trigo", "abv": "4,5%", "ibu": "28", "ebc": "5,0"},
+  {"confraria": "ACZ (08)", "confrariaNome": "ACZ (08)", "categoria": "Estilo Obrigatório", "responsavel": "ACZ (08)", "cerveja": "Oasis", "estilo": "Best Bitter", "descricao": "", "familia": "Ales maltadas", "abv": "4,7%", "ibu": "36", "ebc": "18,0"},
+  {"confraria": "ACZ (08)", "confrariaNome": "ACZ (08)", "categoria": "Estilo Livre", "responsavel": "ACZ (08)", "cerveja": "Nevoa de Asgard", "estilo": "Hazy IPA", "descricao": "", "familia": "IPA & Lupuladas", "abv": "4,7%", "ibu": "32", "ebc": "7,5"},
+  {"confraria": "ACZ (08)", "confrariaNome": "ACZ (08)", "categoria": "Estilo Rio", "responsavel": "ACZ (08)", "cerveja": "Skål Carioca", "estilo": "Saison", "descricao": "", "familia": "Belgas & Saison", "abv": "3,7%", "ibu": "20", "ebc": "5,0"},
+  {"confraria": "ACZ (08)", "confrariaNome": "ACZ (08)", "categoria": "Cervejaria Convidada", "responsavel": "Hankz", "cerveja": "Mosaic Feelings", "estilo": "Hazy IPA", "descricao": "", "familia": "IPA & Lupuladas", "abv": "6,0%", "ibu": "35", "ebc": "5,0"},
+  {"confraria": "ACZ (08)", "confrariaNome": "ACZ (08)", "categoria": "Cervejaria Convidada", "responsavel": "Muller", "cerveja": "Sr Hazy IPA", "estilo": "Hazy IPA", "descricao": "", "familia": "IPA & Lupuladas", "abv": "7,7%", "ibu": "30", "ebc": "4,0"},
+  {"confraria": "ACZ (08)", "confrariaNome": "ACZ (08)", "categoria": "Cervejaria Convidada", "responsavel": "Fatach", "cerveja": "American IPA", "estilo": "American IPA", "descricao": "", "familia": "IPA & Lupuladas", "abv": "7,5%", "ibu": "73", "ebc": "20,0"},
+  {"confraria": "ACZ (08)", "confrariaNome": "ACZ (08)", "categoria": "Cervejas Confrades", "responsavel": "Evandro", "cerveja": "Duas de Uma Vez", "estilo": "Belgian Dubbel", "descricao": "", "familia": "Belgas & Saison", "abv": "6,8%", "ibu": "20", "ebc": "42,0"},
+  {"confraria": "ACZ (08)", "confrariaNome": "ACZ (08)", "categoria": "Cervejas Confrades", "responsavel": "Evandro", "cerveja": "Apaga a Luz", "estilo": "Dunkles Bock", "descricao": "", "familia": "Lagers", "abv": "6,8%", "ibu": "22", "ebc": "30,0"},
+  {"confraria": "C3 (13)", "confrariaNome": "C3 (13)", "categoria": "Estilo Obrigatório", "responsavel": "C3 (13)", "cerveja": "BIRITTER", "estilo": "Best Bitter", "descricao": "Equilíbrio entre leves notas de malte e amargor limpo e moderado", "familia": "Ales maltadas", "abv": "4,6%", "ibu": "35", "ebc": "24,0"},
+  {"confraria": "C3 (13)", "confrariaNome": "C3 (13)", "categoria": "Estilo Livre", "responsavel": "C3 (13)", "cerveja": "Bonecote Black", "estilo": "Specialty IPA: Black IPA", "descricao": "Fusão entre os tostados de uma Stout e aromas de uma IPA", "familia": "IPA & Lupuladas", "abv": "6,7%", "ibu": "65", "ebc": "70,0"},
+  {"confraria": "C3 (13)", "confrariaNome": "C3 (13)", "categoria": "Estilo Rio", "responsavel": "C3 (13)", "cerveja": "Laranjinha Fluminense", "estilo": "Estilo Rio Especial", "descricao": "Cerveja leve e refrescante com adição de infusão de casca de laranja de Tanguá", "familia": "Especiais & Frutadas", "abv": "4,5%", "ibu": "20", "ebc": "12,0"},
+  {"confraria": "C3 (13)", "confrariaNome": "C3 (13)", "categoria": "Cervejas Confrades", "responsavel": "C3 (13)", "cerveja": "APA & CHÃO", "estilo": "American Pale Ale", "descricao": "Aromas cítricos e alto drinkability", "familia": "Ales claras", "abv": "6,3%", "ibu": "47", "ebc": "19,0"},
+  {"confraria": "C3 (13)", "confrariaNome": "C3 (13)", "categoria": "Cervejas Confrades", "responsavel": "C3 (13)", "cerveja": "Duquesa", "estilo": "Strong Bitter", "descricao": "Clássica e intensa cerveja inglesa", "familia": "Ales maltadas", "abv": "5,6%", "ibu": "35", "ebc": "15,0"},
+  {"confraria": "CCBR (12)", "confrariaNome": "CCBR (12)", "categoria": "Estilo Obrigatório", "responsavel": "CCBR (12)", "cerveja": "Fuggles Croft", "estilo": "Best Bitter", "descricao": "", "familia": "Ales maltadas", "abv": "4,6%", "ibu": "36", "ebc": "19,0"},
+  {"confraria": "CCBR (12)", "confrariaNome": "CCBR (12)", "categoria": "Estilo Livre", "responsavel": "CCBR (12)", "cerveja": "Sabor da Mata", "estilo": "Spice, Herb, or Vegetable Beer", "descricao": "é uma Red Ale de cor vermelho-rubi, maltada e equilibrada, com notas de caramelo e toffee harmonizadas às nuances de baunilha, amêndoas e especiarias do cumaru. Uma cerveja que celebra os sabores e aromas da nossa mata em uma interpretação brasileira e marcante.", "familia": "Especiais & Frutadas", "abv": "4,9%", "ibu": "30", "ebc": "25,0"},
+  {"confraria": "CCBR (12)", "confrariaNome": "CCBR (12)", "categoria": "Estilo Rio", "responsavel": "CCBR (12)", "cerveja": "Xarope da Vovó", "estilo": "Catharina Sour", "descricao": "", "familia": "Ácidas & Sours", "abv": "4,2%", "ibu": "3", "ebc": ""},
+  {"confraria": "CCBR (12)", "confrariaNome": "CCBR (12)", "categoria": "Cervejaria Convidada", "responsavel": "INDIGO", "cerveja": "Índigo Munich Helles.", "estilo": "Munich Helles", "descricao": "", "familia": "Lagers", "abv": "5,0%", "ibu": "15", "ebc": ""},
+  {"confraria": "CCBR (12)", "confrariaNome": "CCBR (12)", "categoria": "Cervejaria Convidada", "responsavel": "PAKAS", "cerveja": "Experimento #2", "estilo": "Specialty IPA", "descricao": "A ideia é explorar, a cada EXPERIMENTO#, todas as características que envolvem o único lúpulo utilizado na produção. Lúpulo Polaris, single hop, trazem aromas herbais com uma pegada que remete a abacaxi e leve picância o que levam a EXPERIMENTO#2 um sabor peculiar e único.", "familia": "IPA & Lupuladas", "abv": "4,3%", "ibu": "32", "ebc": "10,0"},
+  {"confraria": "CCBR (12)", "confrariaNome": "CCBR (12)", "categoria": "Cervejas Confrades", "responsavel": "Luiz Rubião", "cerveja": "Melano Helles", "estilo": "Munich Helles", "descricao": "", "familia": "Lagers", "abv": "5,1%", "ibu": "18", "ebc": "17,0"},
+  {"confraria": "CCBR (12)", "confrariaNome": "CCBR (12)", "categoria": "Cervejas Confrades", "responsavel": "Fabio Oliveira", "cerveja": "Cerveja não informada", "estilo": "American Brown Ale", "descricao": "", "familia": "Ales maltadas", "abv": "6,0%", "ibu": "30", "ebc": ""},
+  {"confraria": "CCCP (09)", "confrariaNome": "CCCP (09)", "categoria": "Estilo Obrigatório", "responsavel": "CCCP (09)", "cerveja": "Best Gabi Bittar", "estilo": "Best Bitter", "descricao": "", "familia": "Ales maltadas", "abv": "4,2%", "ibu": "30", "ebc": "15,0"},
+  {"confraria": "CCCP (09)", "confrariaNome": "CCCP (09)", "categoria": "Estilo Livre", "responsavel": "CCCP (09)", "cerveja": "Tom's smoked stout", "estilo": "American Stout", "descricao": "Stout defumada", "familia": "Escuras tostadas", "abv": "6,3%", "ibu": "37", "ebc": "60,0"},
+  {"confraria": "CCCP (09)", "confrariaNome": "CCCP (09)", "categoria": "Estilo Rio", "responsavel": "CCCP (09)", "cerveja": "Verão petro - Rio", "estilo": "Estilo Rio Especial", "descricao": "Mate e capim limão", "familia": "Especiais & Frutadas", "abv": "4,9%", "ibu": "12", "ebc": "10,0"},
+  {"confraria": "CCCP (09)", "confrariaNome": "CCCP (09)", "categoria": "Cervejas Confrades", "responsavel": "CCCP (09)", "cerveja": "Tangeripa", "estilo": "Specialty IPA", "descricao": "Session Ipa com Tangerina", "familia": "IPA & Lupuladas", "abv": "5,2%", "ibu": "35", "ebc": "14,0"},
+  {"confraria": "CCCP (09)", "confrariaNome": "CCCP (09)", "categoria": "Cervejas Confrades", "responsavel": "CCCP (09)", "cerveja": "Brut Ipa", "estilo": "Specialty IPA: Brut IPA", "descricao": "", "familia": "IPA & Lupuladas", "abv": "6,3%", "ibu": "26", "ebc": "8,0"},
+  {"confraria": "CCCP (09)", "confrariaNome": "CCCP (09)", "categoria": "Cervejas Confrades", "responsavel": "CCCP (09)", "cerveja": "Pula fogueira", "estilo": "Experimental Beer", "descricao": "Imperial blond Ale com gengibre e limão galego", "familia": "Especiais & Frutadas", "abv": "7,2%", "ibu": "18", "ebc": "16,0"},
+  {"confraria": "CCGM (14)", "confrariaNome": "CCGM (14)", "categoria": "Estilo Obrigatório", "responsavel": "CCGM (14)", "cerveja": "Simply The Best", "estilo": "Best Bitter", "descricao": "", "familia": "Ales maltadas", "abv": "4,6%", "ibu": "35", "ebc": "17,7"},
+  {"confraria": "CCGM (14)", "confrariaNome": "CCGM (14)", "categoria": "Estilo Livre", "responsavel": "CCGM (14)", "cerveja": "Santa Gudula", "estilo": "Belgian Tripel", "descricao": "", "familia": "Belgas & Saison", "abv": "9,0%", "ibu": "30", "ebc": "11,0"},
+  {"confraria": "CCGM (14)", "confrariaNome": "CCGM (14)", "categoria": "Estilo Rio", "responsavel": "CCGM (14)", "cerveja": "Água de Coco", "estilo": "Estilo Rio", "descricao": "Aroma e sabor do coco obtido por dry hop de Sabro. Adição de Sal.", "familia": "Especiais & Frutadas", "abv": "4,6%", "ibu": "21", "ebc": "7,0"},
+  {"confraria": "CCGM (14)", "confrariaNome": "CCGM (14)", "categoria": "Cervejaria Convidada", "responsavel": "Fellowbeer", "cerveja": "Silmaripa", "estilo": "American IPA", "descricao": "West Coast feita em colaboração Fellowbeer/Brewteco/Overhop. Toda presença de uma West coast cítrica e resinosa numa proposta mais leve com drinkability mais alta.", "familia": "IPA & Lupuladas", "abv": "6,0%", "ibu": "52", "ebc": "20,0"},
+  {"confraria": "CCGM (14)", "confrariaNome": "CCGM (14)", "categoria": "Cervejaria Convidada", "responsavel": "Tropi", "cerveja": "Carioca Lager", "estilo": "Mixed-Style Beer", "descricao": "Leve, vibrante e absurdamente refrescante, a Carioca Lager é uma Juicy Lager com alma moderna e sotaque brasileiro. Produzida em Petrópolis, com água da serra e lúpulo COMET nacional, ela entrega notas frutadas e cítricas que combinam perfeitamente com o clima e o astral do Rio. Equilibrada, fácil de beber e cheia de personalidade, é aquela lager com algo a mais: frescor de sobra, corpo leve e um final que pede outro gole. Seja no alto da serra ou no calor da praia, ela acompanha bem do boteco ao after, da roda de amigos ao pôr do sol.", "familia": "Especiais & Frutadas", "abv": "4,0%", "ibu": "17", "ebc": "9,0"},
+  {"confraria": "CCGM (14)", "confrariaNome": "CCGM (14)", "categoria": "Cervejaria Convidada", "responsavel": "Culundria", "cerveja": "SILENTIUM", "estilo": "Belgian Dark Strong Ale", "descricao": "", "familia": "Belgas & Saison", "abv": "9,1%", "ibu": "37", "ebc": "40,0"},
+  {"confraria": "CCGM (14)", "confrariaNome": "CCGM (14)", "categoria": "Cervejas Confrades", "responsavel": "Lucas Barros", "cerveja": "Zaratustra", "estilo": "Irish Red Ale", "descricao": "", "familia": "Ales maltadas", "abv": "5,3%", "ibu": "25", "ebc": "14,0"},
+  {"confraria": "CCGM (14)", "confrariaNome": "CCGM (14)", "categoria": "Cervejas Confrades", "responsavel": "Wagner Ramos", "cerveja": "Dank Saison", "estilo": "Saison", "descricao": "dry hop de Eukanot", "familia": "Belgas & Saison", "abv": "4,6%", "ibu": "25", "ebc": "11,0"},
+  {"confraria": "CCGM (14)", "confrariaNome": "CCGM (14)", "categoria": "Cervejas Confrades", "responsavel": "Andrezza Piccoli", "cerveja": "Aquilombada", "estilo": "Dark Mild", "descricao": "", "familia": "Ales maltadas", "abv": "3,5%", "ibu": "13", "ebc": "33,0"},
+  {"confraria": "CCGM (14)", "confrariaNome": "CCGM (14)", "categoria": "Cervejas Confrades", "responsavel": "Moutinho", "cerveja": "Índia Verde", "estilo": "Specialty IPA", "descricao": "Leve e refrescante com explosão de lúpulos cítricos e resinosos", "familia": "IPA & Lupuladas", "abv": "4,9%", "ibu": "28", "ebc": "14,0"},
+  {"confraria": "CCGM (14)", "confrariaNome": "CCGM (14)", "categoria": "Cervejas Confrades", "responsavel": "Felipe Martins", "cerveja": "Kazu Dupla B", "estilo": "Belgian Dubbel", "descricao": "Cerveja complexa e intensa que apresenta notas frutadas, caramelo e chocolate", "familia": "Belgas & Saison", "abv": "7,0%", "ibu": "20", "ebc": "37,0"},
+  {"confraria": "CCGM (14)", "confrariaNome": "CCGM (14)", "categoria": "Cervejas Confrades", "responsavel": "Fabio Ozomi", "cerveja": "MI5", "estilo": "Strong Bitter", "descricao": "Cerveja amarga e equilibrada com notas de caramelo e um toque de lúpulos terrosos", "familia": "Ales maltadas", "abv": "5,0%", "ibu": "31", "ebc": "21,0"},
+  {"confraria": "CCGM (14)", "confrariaNome": "CCGM (14)", "categoria": "Cervejas Confrades", "responsavel": "Igor Silva", "cerveja": "Toffee Mint Porter", "estilo": "English Porter", "descricao": "Notas de chocolate e pães tostados com adição de menta", "familia": "Escuras tostadas", "abv": "5,8%", "ibu": "30", "ebc": "68,0"},
+  {"confraria": "CCGM (14)", "confrariaNome": "CCGM (14)", "categoria": "Cervejas Confrades", "responsavel": "Lucas Faria", "cerveja": "Mundo Bitter", "estilo": "Best Bitter", "descricao": "Amarga e equilibrada que apresenta notas de pão, biscoito e caramelo", "familia": "Ales maltadas", "abv": "4,0%", "ibu": "25", "ebc": "32,0"},
+  {"confraria": "CCGM (14)", "confrariaNome": "CCGM (14)", "categoria": "Cervejas Confrades", "responsavel": "Denis", "cerveja": "MelanSOUR", "estilo": "Catharina Sour", "descricao": "com Melancia", "familia": "Ácidas & Sours", "abv": "4,0%", "ibu": "7", "ebc": "14,0"},
+  {"confraria": "CCLA (16)", "confrariaNome": "CCLA (16)", "categoria": "Estilo Obrigatório", "responsavel": "CCLA (16)", "cerveja": "Bitter Rio 40º", "estilo": "Strong Bitter", "descricao": "Amarga como tem que ser uma English Strong Bitter feita no calor de 40° do Rio. Malte tostado, amargor firme de lúpulo inglês e final seco que pede o próximo gole. 5,8% - Pra beber de bermuda, não de gravata.", "familia": "Ales maltadas", "abv": "5,8%", "ibu": "40", "ebc": "25,0"},
+  {"confraria": "CCLA (16)", "confrariaNome": "CCLA (16)", "categoria": "Estilo Livre", "responsavel": "CCLA (16)", "cerveja": "Esquilo Noturno", "estilo": "Experimental Beer", "descricao": "Base de Muinch Dunkel com adição de Cacau e avelã arredondando perfeitamente o estilo.", "familia": "Especiais & Frutadas", "abv": "5,1%", "ibu": "23", "ebc": "34,0"},
+  {"confraria": "CCLA (16)", "confrariaNome": "CCLA (16)", "categoria": "Estilo Rio", "responsavel": "CCLA (16)", "cerveja": "GLU GLU, IÉ IÉ 3.0", "estilo": "Estilo Rio Especial", "descricao": "Cerveja com base de Cream Ale, leve e refrescante com adição de erva mate. Como um dia de praia no RJ deve ser!", "familia": "Especiais & Frutadas", "abv": "4,8%", "ibu": "18", "ebc": "25,0"},
+  {"confraria": "CCLA (16)", "confrariaNome": "CCLA (16)", "categoria": "Cervejaria Convidada", "responsavel": "STRAUBEL", "cerveja": "Summer Vibes", "estilo": "British Golden Ale", "descricao": "Uma Summer Ale base bem levinha com adição de frutas cristalizadas (laranja, toranja e limão)", "familia": "Ales claras", "abv": "5,0%", "ibu": "15", "ebc": "8,0"},
+  {"confraria": "CCLA (16)", "confrariaNome": "CCLA (16)", "categoria": "Cervejaria Convidada", "responsavel": "Browles Beer", "cerveja": "Manga Rosa", "estilo": "Fruit Beer", "descricao": "Fruit Beer com lupulagem sabor e aroma de Manga e frutas tropicais e extrato natural de manga destacando a fruta equilibradamente com malte e lúpulos.", "familia": "Especiais & Frutadas", "abv": "4,5%", "ibu": "17", "ebc": "9,0"},
+  {"confraria": "CCLA (16)", "confrariaNome": "CCLA (16)", "categoria": "Cervejas Confrades", "responsavel": "Fabio Rouberte", "cerveja": "Renegada", "estilo": "Specialty IPA: Red IPA", "descricao": "Cerveja aromatica e de vermelho intenso", "familia": "IPA & Lupuladas", "abv": "6,0%", "ibu": "50", "ebc": "30,0"},
+  {"confraria": "CCLA (16)", "confrariaNome": "CCLA (16)", "categoria": "Cervejas Confrades", "responsavel": "Marcos Borges", "cerveja": "Buraco Negro", "estilo": "Imperial Stout", "descricao": "RIS com carvalho, chocolate e Whisky", "familia": "Escuras tostadas", "abv": "11,6%", "ibu": "76", "ebc": "92,0"},
+  {"confraria": "CCLA (16)", "confrariaNome": "CCLA (16)", "categoria": "Cervejas Confrades", "responsavel": "Daniel Peçanha", "cerveja": "Weiss Ferrando", "estilo": "Weissbier", "descricao": "Cerveja de Trigo onde você vai sentir a Banana! o Será o cravo?", "familia": "Trigo", "abv": "5,4%", "ibu": "9", "ebc": "7,0"},
+  {"confraria": "CCLA (16)", "confrariaNome": "CCLA (16)", "categoria": "Cervejas Confrades", "responsavel": "Anderson Marttorelli", "cerveja": "Proibida em Munique", "estilo": "German Pils", "descricao": "German Pils com laranja", "familia": "Lagers", "abv": "4,7%", "ibu": "30", "ebc": "8,0"},
+  {"confraria": "CCLA (16)", "confrariaNome": "CCLA (16)", "categoria": "Cervejas Confrades", "responsavel": "Everton Gustavo", "cerveja": "Alvorada Bávara", "estilo": "Munich Helles", "descricao": "Cerveja clara e límpida, notas sutis de malte e lúpulo que se equilibram", "familia": "Lagers", "abv": "5,0%", "ibu": "22", "ebc": "10,0"},
+  {"confraria": "CCLO (04)", "confrariaNome": "CCLO (04)", "categoria": "Estilo Obrigatório", "responsavel": "CCLO (04)", "cerveja": "Ruiva do Oeste", "estilo": "Best Bitter", "descricao": "", "familia": "Ales maltadas", "abv": "4,6%", "ibu": "35", "ebc": "23,0"},
+  {"confraria": "CCLO (04)", "confrariaNome": "CCLO (04)", "categoria": "Estilo Livre", "responsavel": "CCLO (04)", "cerveja": "Tiro no Escuro 2.0", "estilo": "Wood-Aged Beer", "descricao": "American Porter com passagem em amburana, marcada por chocolate, cacau e torrefação, com notas amadeiradas, amendoada e especiada, que se integram ao conjunto, resultando em uma Porter complexa e intensa.", "familia": "Especiais & Frutadas", "abv": "5,5%", "ibu": "35", "ebc": "73,0"},
+  {"confraria": "CCLO (04)", "confrariaNome": "CCLO (04)", "categoria": "Estilo Rio", "responsavel": "CCLO (04)", "cerveja": "Cafezinho Carioca", "estilo": "Estilo Rio", "descricao": "Cerveja base ordinary Bitter com adição de Cold Brew de Café de torra média.", "familia": "Especiais & Frutadas", "abv": "3,8%", "ibu": "27", "ebc": "26,0"},
+  {"confraria": "CCLO (04)", "confrariaNome": "CCLO (04)", "categoria": "Cervejaria Convidada", "responsavel": "Sulamericana", "cerveja": "IPA", "estilo": "American IPA", "descricao": "", "familia": "IPA & Lupuladas", "abv": "6,5%", "ibu": "50", "ebc": "25,0"},
+  {"confraria": "CCLO (04)", "confrariaNome": "CCLO (04)", "categoria": "Cervejaria Convidada", "responsavel": "Sulamericana", "cerveja": "Black Lager", "estilo": "Schwarzbier", "descricao": "", "familia": "Lagers", "abv": "5,5%", "ibu": "16", "ebc": "60,0"},
+  {"confraria": "CCLO (04)", "confrariaNome": "CCLO (04)", "categoria": "Cervejas Confrades", "responsavel": "Deiverson", "cerveja": "Lenda", "estilo": "Gose", "descricao": "Sal marinho, Lactose e Manga", "familia": "Ácidas & Sours", "abv": "4,5%", "ibu": "8", "ebc": "8,0"},
+  {"confraria": "CCLO (04)", "confrariaNome": "CCLO (04)", "categoria": "Cervejas Confrades", "responsavel": "Tarcísio", "cerveja": "Tark", "estilo": "Best Bitter", "descricao": "", "familia": "Ales maltadas", "abv": "4,2%", "ibu": "27", "ebc": "17,0"},
+  {"confraria": "CCLO (04)", "confrariaNome": "CCLO (04)", "categoria": "Cervejas Confrades", "responsavel": "Anderson Beça", "cerveja": "Bala Halls", "estilo": "Mixed-Style Beer", "descricao": "Hop Lager com menta", "familia": "Especiais & Frutadas", "abv": "5,0%", "ibu": "30", "ebc": "12,0"},
+  {"confraria": "CCLO (04)", "confrariaNome": "CCLO (04)", "categoria": "Cervejas Confrades", "responsavel": "Maurilio", "cerveja": "KriptonIPA", "estilo": "Specialty IPA", "descricao": "IPA com Hortelã", "familia": "IPA & Lupuladas", "abv": "5,6%", "ibu": "65", "ebc": "21,0"},
+  {"confraria": "CDM (03)", "confrariaNome": "CDM (03)", "categoria": "Estilo Obrigatório", "responsavel": "CDM (03)", "cerveja": "Ordinary Mary", "estilo": "Ordinary Bitter", "descricao": "", "familia": "Ales maltadas", "abv": "3,4%", "ibu": "30", "ebc": "14,0"},
+  {"confraria": "CDM (03)", "confrariaNome": "CDM (03)", "categoria": "Estilo Livre", "responsavel": "CDM (03)", "cerveja": "Maria Comprida", "estilo": "Cream Ale", "descricao": "", "familia": "Ales claras", "abv": "5,6%", "ibu": "34", "ebc": "5,0"},
+  {"confraria": "CDM (03)", "confrariaNome": "CDM (03)", "categoria": "Estilo Rio", "responsavel": "CDM (03)", "cerveja": "Maria que te Matte", "estilo": "Estilo Rio Especial", "descricao": "", "familia": "Especiais & Frutadas", "abv": "5,1%", "ibu": "13", "ebc": "5,0"},
+  {"confraria": "CDM (03)", "confrariaNome": "CDM (03)", "categoria": "Cervejas Confrades", "responsavel": "Andrezza Piccoli", "cerveja": "Descasca esse abacaxi", "estilo": "Catharina Sour", "descricao": "", "familia": "Ácidas & Sours", "abv": "4,5%", "ibu": "6", "ebc": "6,4"},
+  {"confraria": "CDM (03)", "confrariaNome": "CDM (03)", "categoria": "Cervejas Confrades", "responsavel": "Julia Hubner Kolling Leidnfrost", "cerveja": "Maria Festeira", "estilo": "Festbier", "descricao": "", "familia": "Lagers", "abv": "6,4%", "ibu": "20", "ebc": "9,0"},
+  {"confraria": "CG (07)", "confrariaNome": "CG (07)", "categoria": "Estilo Obrigatório", "responsavel": "CG (07)", "cerveja": "Extra Special Bitch", "estilo": "Best Bitter", "descricao": "Extra Special Bitter", "familia": "Ales maltadas", "abv": "4,5%", "ibu": "31", "ebc": "24,0"},
+  {"confraria": "CG (07)", "confrariaNome": "CG (07)", "categoria": "Estilo Livre", "responsavel": "CG (07)", "cerveja": "Ameríndia", "estilo": "Spice, Herb, or Vegetable Beer", "descricao": "Belgian Blonde com adição de erva-mate sem torra", "familia": "Especiais & Frutadas", "abv": "5,4%", "ibu": "21", "ebc": ""},
+  {"confraria": "CG (07)", "confrariaNome": "CG (07)", "categoria": "Estilo Rio", "responsavel": "CG (07)", "cerveja": "Gengibrosa", "estilo": "Estilo Rio", "descricao": "Cream Ale com gengibre e capim-limão", "familia": "Especiais & Frutadas", "abv": "4,2%", "ibu": "12", "ebc": "8,1"},
+  {"confraria": "CG (07)", "confrariaNome": "CG (07)", "categoria": "Cervejaria Convidada", "responsavel": "Boteco de Raoni", "cerveja": "Pra Quem É Tá Bom", "estilo": "Specialty IPA", "descricao": "Session IPA", "familia": "IPA & Lupuladas", "abv": "4,9%", "ibu": "", "ebc": ""},
+  {"confraria": "CG (07)", "confrariaNome": "CG (07)", "categoria": "Cervejas Confrades", "responsavel": "Ana", "cerveja": "Juliette", "estilo": "English Porter", "descricao": "Porter", "familia": "Escuras tostadas", "abv": "5,2%", "ibu": "", "ebc": ""},
+  {"confraria": "CG (07)", "confrariaNome": "CG (07)", "categoria": "Cervejas Confrades", "responsavel": "Masterson", "cerveja": "Amorosa", "estilo": "Fruit Beer", "descricao": "Leva amoras!", "familia": "Especiais & Frutadas", "abv": "5,5%", "ibu": "", "ebc": ""},
+  {"confraria": "CG (07)", "confrariaNome": "CG (07)", "categoria": "Cervejas Confrades", "responsavel": "Júlio César Mouse", "cerveja": "Andaraípa", "estilo": "Specialty IPA", "descricao": "Session IPA", "familia": "IPA & Lupuladas", "abv": "4,5%", "ibu": "", "ebc": ""},
+  {"confraria": "CONCEBA (15)", "confrariaNome": "CONCEBA (15)", "categoria": "Estilo Obrigatório", "responsavel": "CONCEBA (15)", "cerveja": "Arkitt", "estilo": "Best Bitter", "descricao": "", "familia": "Ales maltadas", "abv": "4,3%", "ibu": "31", "ebc": "32,0"},
+  {"confraria": "CONCEBA (15)", "confrariaNome": "CONCEBA (15)", "categoria": "Estilo Livre", "responsavel": "CONCEBA (15)", "cerveja": "Gohanzilla", "estilo": "International Pale Lager", "descricao": "Japanase Rice Lager", "familia": "Lagers", "abv": "4,9%", "ibu": "20", "ebc": "4,9"},
+  {"confraria": "CONCEBA (15)", "confrariaNome": "CONCEBA (15)", "categoria": "Estilo Rio", "responsavel": "CONCEBA (15)", "cerveja": "É Noix!", "estilo": "Estilo Rio Especial", "descricao": "Estilo Rio Especial Cítrico - American Lager com água de coco, gengibre e limão siciliano.", "familia": "Especiais & Frutadas", "abv": "4,0%", "ibu": "18", "ebc": "8,0"},
+  {"confraria": "CONCEBA (15)", "confrariaNome": "CONCEBA (15)", "categoria": "Cervejaria Convidada", "responsavel": "Backbone", "cerveja": "Sour Pitanga", "estilo": "Catharina Sour", "descricao": "Sour de Pitanga com Hibisco.", "familia": "Ácidas & Sours", "abv": "4,5%", "ibu": "7", "ebc": "8,0"},
+  {"confraria": "CONCEBA (15)", "confrariaNome": "CONCEBA (15)", "categoria": "Cervejas Confrades", "responsavel": "Marcio Motta", "cerveja": "Coffee Blond Ale", "estilo": "Spice, Herb, or Vegetable Beer", "descricao": "Cerveja com adição de grãos de Café torrados.", "familia": "Especiais & Frutadas", "abv": "4,7%", "ibu": "33", "ebc": "9,0"},
+  {"confraria": "CONCEBA (15)", "confrariaNome": "CONCEBA (15)", "categoria": "Cervejas Confrades", "responsavel": "Filipe Pantagruel", "cerveja": "Double Apagão", "estilo": "Double IPA", "descricao": "Single Hop de Mosaic.", "familia": "IPA & Lupuladas", "abv": "7,8%", "ibu": "80", "ebc": "12,0"},
+  {"confraria": "CONCEBA (15)", "confrariaNome": "CONCEBA (15)", "categoria": "Cervejas Confrades", "responsavel": "Marcos Renato", "cerveja": "Complexo C", "estilo": "Specialty IPA", "descricao": "Session IPA com a combinação de 4 lúpulos cítricos: Columbus, Centennial, Citra e Cascade.", "familia": "IPA & Lupuladas", "abv": "4,5%", "ibu": "37", "ebc": "10,0"},
+  {"confraria": "CONCEBA (15)", "confrariaNome": "CONCEBA (15)", "categoria": "Cervejas Confrades", "responsavel": "Marcelo Pinto", "cerveja": "Marola", "estilo": "Catharina Sour", "descricao": "Sour de Manga, Maracujá e Graviola.", "familia": "Ácidas & Sours", "abv": "5,5%", "ibu": "5", "ebc": "9,0"},
+  {"confraria": "CONCEBA (15)", "confrariaNome": "CONCEBA (15)", "categoria": "Cervejas Confrades", "responsavel": "Diogo Oliveira", "cerveja": "Voss de Odin", "estilo": "Specialty IPA", "descricao": "Session IPA - Single Hop Citra - Kveik Voss", "familia": "IPA & Lupuladas", "abv": "4,7%", "ibu": "41", "ebc": "7,0"},
+  {"confraria": "CONCEBA (15)", "confrariaNome": "CONCEBA (15)", "categoria": "Cervejas Confrades", "responsavel": "Fabio Ferreira", "cerveja": "Odisseu Session IPA", "estilo": "Specialty IPA", "descricao": "Session IPA", "familia": "IPA & Lupuladas", "abv": "3,9%", "ibu": "33", "ebc": "10,0"},
+  {"confraria": "CONCEBA (15)", "confrariaNome": "CONCEBA (15)", "categoria": "Cervejas Confrades", "responsavel": "Colab Arafat, Guabiraba, Joleno, Carlão e Diogo Loureiro", "cerveja": "Cidade Perfume", "estilo": "Cream Ale", "descricao": "Cream Ale com os lúpulos Citra e Cascade.", "familia": "Ales claras", "abv": "5,0%", "ibu": "16", "ebc": "6,0"},
+  {"confraria": "CONCEBA (15)", "confrariaNome": "CONCEBA (15)", "categoria": "Cervejas Confrades", "responsavel": "Filipe Pantagruel", "cerveja": "Fear of a Dark Planet", "estilo": "Mixed-Fermentation Sour Beer", "descricao": "Dark Sour refermentanda com Brettanomyces e maturada por 15 meses.", "familia": "Ácidas & Sours", "abv": "8,0%", "ibu": "8", "ebc": "40,0"},
+  {"confraria": "CONCEBA (15)", "confrariaNome": "CONCEBA (15)", "categoria": "Cervejas Confrades", "responsavel": "Vitor Eduão", "cerveja": "Meritipa", "estilo": "American IPA", "descricao": "IPA single hop de Citra.", "familia": "IPA & Lupuladas", "abv": "6,5%", "ibu": "45", "ebc": "10,0"},
+  {"confraria": "CONCERMIRAFJ (05)", "confrariaNome": "CONCERMIRAFJ (05)", "categoria": "Estilo Obrigatório", "responsavel": "CONCERMIRAFJ (05)", "cerveja": "Pode chamar de Ordinary, mas o sabor é extraordinário", "estilo": "Ordinary Bitter", "descricao": "", "familia": "Ales maltadas", "abv": "3,5%", "ibu": "28", "ebc": "15,0"},
+  {"confraria": "CONCERMIRAFJ (05)", "confrariaNome": "CONCERMIRAFJ (05)", "categoria": "Estilo Livre", "responsavel": "CONCERMIRAFJ (05)", "cerveja": "Puro malte com a leveza que refresca seu dia a dia", "estilo": "American Lager", "descricao": "", "familia": "Lagers", "abv": "4,5%", "ibu": "10", "ebc": "6,0"},
+  {"confraria": "CONCERMIRAFJ (05)", "confrariaNome": "CONCERMIRAFJ (05)", "categoria": "Estilo Rio", "responsavel": "CONCERMIRAFJ (05)", "cerveja": "Nem mate e nem capim e nem chá, cerveja de boa para gente degustar", "estilo": "Estilo Rio Especial", "descricao": "base Pilsen com erva mate e capim limão", "familia": "Especiais & Frutadas", "abv": "4,8%", "ibu": "15", "ebc": "6,0"},
+  {"confraria": "CRB (02)", "confrariaNome": "CRB (02)", "categoria": "Estilo Obrigatório", "responsavel": "CRB (02)", "cerveja": "Bitter Dream", "estilo": "Best Bitter", "descricao": "", "familia": "Ales maltadas", "abv": "4,6%", "ibu": "26", "ebc": "16,0"},
+  {"confraria": "CRB (02)", "confrariaNome": "CRB (02)", "categoria": "Estilo Livre", "responsavel": "CRB (02)", "cerveja": "Coffee 'n' Roll", "estilo": "Spice, Herb, or Vegetable Beer", "descricao": "American blond ale com café", "familia": "Especiais & Frutadas", "abv": "5,0%", "ibu": "18", "ebc": "10,0"},
+  {"confraria": "CRB (02)", "confrariaNome": "CRB (02)", "categoria": "Estilo Rio", "responsavel": "CRB (02)", "cerveja": "Carioca", "estilo": "Estilo Rio Especial", "descricao": "Com mate, limão e biscoito globo salgado", "familia": "Especiais & Frutadas", "abv": "4,8%", "ibu": "15", "ebc": "10,0"},
+  {"confraria": "CRB (02)", "confrariaNome": "CRB (02)", "categoria": "Cervejaria Convidada", "responsavel": "Malte Sempre", "cerveja": "Sessionzeiro", "estilo": "Specialty IPA", "descricao": "Session IPA", "familia": "IPA & Lupuladas", "abv": "5,0%", "ibu": "40", "ebc": "10,0"},
+  {"confraria": "CRB (02)", "confrariaNome": "CRB (02)", "categoria": "Cervejas Confrades", "responsavel": "Nasa", "cerveja": "Tríade Dourada", "estilo": "Belgian Tripel", "descricao": "", "familia": "Belgas & Saison", "abv": "8,4%", "ibu": "22", "ebc": "12,0"},
+  {"confraria": "CSF (10)", "confrariaNome": "CSF (10)", "categoria": "Estilo Obrigatório", "responsavel": "CSF (10)", "cerveja": "OBEBD+", "estilo": "Ordinary Bitter", "descricao": "", "familia": "Ales maltadas", "abv": "3,2%", "ibu": "26", "ebc": ""},
+  {"confraria": "CSF (10)", "confrariaNome": "CSF (10)", "categoria": "Estilo Livre", "responsavel": "CSF (10)", "cerveja": "Stoutmaltine", "estilo": "Oatmeal Stout", "descricao": "com cacau", "familia": "Escuras tostadas", "abv": "4,7%", "ibu": "31", "ebc": ""},
+  {"confraria": "CSF (10)", "confrariaNome": "CSF (10)", "categoria": "Estilo Rio", "responsavel": "CSF (10)", "cerveja": "Cervantes Tropical", "estilo": "American Wheat Beer", "descricao": "com abacaxi e limão", "familia": "Trigo", "abv": "4,7%", "ibu": "25", "ebc": ""},
+  {"confraria": "CSF (10)", "confrariaNome": "CSF (10)", "categoria": "Cervejaria Convidada", "responsavel": "CSF (10) - Cervejaria Hoperários", "cerveja": "Hoperários Pilsen Sem Álcool", "estilo": "American Lager", "descricao": "Cervejaria Hoperários", "familia": "Lagers", "abv": "0,0%", "ibu": "", "ebc": ""},
+  {"confraria": "CSF (10)", "confrariaNome": "CSF (10)", "categoria": "Cervejaria Convidada", "responsavel": "CSF (10) - Cervejaria Hoperários", "cerveja": "Hoperários IPA Sem Álcool", "estilo": "American IPA", "descricao": "Cervejaria Hoperários", "familia": "IPA & Lupuladas", "abv": "0,0%", "ibu": "", "ebc": ""},
+  {"confraria": "CSF (10)", "confrariaNome": "CSF (10)", "categoria": "Cervejas Confrades", "responsavel": "CSF (10)", "cerveja": "Cerveja não informada", "estilo": "Cream Ale", "descricao": "", "familia": "Ales claras", "abv": "4,6%", "ibu": "25", "ebc": ""},
+  {"confraria": "INSULANA (11)", "confrariaNome": "INSULANA (11)", "categoria": "Estilo Livre", "responsavel": "INSULANA (11)", "cerveja": "Canto de Osanha", "estilo": "Baltic Porter", "descricao": "com Whisky e Baunilha", "familia": "Escuras tostadas", "abv": "8,0%", "ibu": "29", "ebc": "51,0"},
+  {"confraria": "INSULANA (11)", "confrariaNome": "INSULANA (11)", "categoria": "Estilo Obrigatório", "responsavel": "INSULANA (11)", "cerveja": "Chá de Liverpool", "estilo": "Best Bitter", "descricao": "", "familia": "Ales maltadas", "abv": "4,2%", "ibu": "30", "ebc": "23,0"},
+  {"confraria": "INSULANA (11)", "confrariaNome": "INSULANA (11)", "categoria": "Estilo Rio", "responsavel": "INSULANA (11)", "cerveja": "Suco da Maromba", "estilo": "Estilo Rio", "descricao": "American Wheat com Beterraba", "familia": "Especiais & Frutadas", "abv": "5,0%", "ibu": "25", "ebc": ""},
+  {"confraria": "INSULANA (11)", "confrariaNome": "INSULANA (11)", "categoria": "Cervejaria Convidada", "responsavel": "Bebum Brewery", "cerveja": "Session IPA #1", "estilo": "Specialty IPA", "descricao": "", "familia": "IPA & Lupuladas", "abv": "", "ibu": "", "ebc": ""},
+  {"confraria": "INSULANA (11)", "confrariaNome": "INSULANA (11)", "categoria": "Cervejaria Convidada", "responsavel": "Cervejaria Barth", "cerveja": "Collab com Brewteco", "estilo": "British Golden Ale", "descricao": "", "familia": "Ales claras", "abv": "", "ibu": "", "ebc": ""},
+  {"confraria": "INSULANA (11)", "confrariaNome": "INSULANA (11)", "categoria": "Cervejaria Convidada", "responsavel": "Hop and Go Cervejaria", "cerveja": "Pilsen", "estilo": "American Lager", "descricao": "", "familia": "Lagers", "abv": "", "ibu": "", "ebc": ""},
+  {"confraria": "INSULANA (11)", "confrariaNome": "INSULANA (11)", "categoria": "Cervejas Confrades", "responsavel": "Éder, Rafael e John", "cerveja": "Pastry Porter", "estilo": "Baltic Porter", "descricao": "", "familia": "Escuras tostadas", "abv": "", "ibu": "", "ebc": ""},
+  {"confraria": "INSULANA (11)", "confrariaNome": "INSULANA (11)", "categoria": "Cervejas Confrades", "responsavel": "John (Reino)", "cerveja": "Calmante da Vovó", "estilo": "Specialty Fruit Beer", "descricao": "", "familia": "Especiais & Frutadas", "abv": "", "ibu": "", "ebc": ""}
+];
+
+const FAMILY_COLORS = {
+  "Ales maltadas": "#e67e22",
+  "Escuras tostadas": "#5d4037",
+  "IPA & Lupuladas": "#27ae60",
+  "Ales claras": "#f1c40f",
+  "Lagers": "#f39c12",
+  "Trigo": "#f39c12",
+  "Belgas & Saison": "#d35400",
+  "Ácidas & Sours": "#e74c3c",
+  "Especiais & Frutadas": "#9b59b6",
+  "Outros": "#95a5a6"
+};
+
+function getFamilyColor(familia) {
+  return FAMILY_COLORS[familia] || '#f39c12';
+}
+
+window.favorites = JSON.parse(localStorage.getItem('fdcrj_favs') || '[]');
+window.ratings = JSON.parse(localStorage.getItem('fdcrj_ratings') || '{}');
+window.notes = JSON.parse(localStorage.getItem('fdcrj_notes') || '{}');
+
+let activeQuickFilter = null;
+let currentModalIndex = null;
+
+// Alternância de Tema
+const themeToggleBtn = document.getElementById('themeToggle');
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('fdcrj_theme', theme);
+  if (themeToggleBtn) {
+    themeToggleBtn.innerHTML = theme === 'dark' ? '🌙 Modo Escuro' : '☀️ Modo Claro';
+  }
+}
+
+const savedTheme = localStorage.getItem('fdcrj_theme') || 'dark';
+setTheme(savedTheme);
+
+if (themeToggleBtn) {
+  themeToggleBtn.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+  });
+}
+
+// Elementos DOM
+const searchInput = document.getElementById('search');
+const selConf = document.getElementById('fConf');
+const selCat = document.getElementById('fCat');
+const selFam = document.getElementById('fFam');
+const selEstilo = document.getElementById('fEstilo');
+const selSort = document.getElementById('fSort');
+const grid = document.getElementById('grid');
+const modal = document.getElementById('modal');
+const btnCloseModal = document.getElementById('btnCloseModal');
+const noteTextarea = document.querySelector('.modal .notes');
+const starsContainer = document.querySelector('.modal .rate');
+
+function initFilters() {
+  const confrarias = [...new Set(DATA.map(d => d.confrariaNome).filter(Boolean))].sort();
+  const categorias = [...new Set(DATA.map(d => d.categoria).filter(Boolean))].sort();
+  const familias = [...new Set(DATA.map(d => d.familia).filter(Boolean))].sort();
+  const estilos = [...new Set(DATA.map(d => d.estilo).filter(Boolean))].sort();
+
+  populateSelect(selConf, confrarias, "Todas as Confrarias");
+  populateSelect(selCat, categorias, "Todas as Categorias");
+  populateSelect(selFam, familias, "Todas as Famílias");
+  populateSelect(selEstilo, estilos, "Todos os Estilos");
+}
+
+function populateSelect(selectEl, items, defaultText) {
+  if (!selectEl) return;
+  selectEl.innerHTML = `<option value="">${defaultText}</option>`;
+  items.forEach(item => {
+    const opt = document.createElement('option');
+    opt.value = item;
+    opt.textContent = item;
+    selectEl.appendChild(opt);
+  });
+}
+
+function parseNum(val) {
+  if (!val) return -1;
+  const cleaned = val.toString().replace('%', '').replace(',', '.').trim();
+  const num = parseFloat(cleaned);
+  return isNaN(num) ? -1 : num;
+}
+
+window.filterData = function() {
+  const q = (searchInput ? searchInput.value : '').toLowerCase().trim();
+  const confVal = selConf ? selConf.value : '';
+  const catVal = selCat ? selCat.value : '';
+  const famVal = selFam ? selFam.value : '';
+  const estiloVal = selEstilo ? selEstilo.value : '';
+  const sortVal = selSort ? selSort.value : '';
+
+  let filtered = DATA.map((item, index) => ({ item, index })).filter(({ item, index }) => {
+    if (activeQuickFilter === 'fav' && !window.favorites.includes(index)) return false;
+    if (activeQuickFilter === 'rio' && item.categoria !== 'Estilo Rio') return false;
+    if (activeQuickFilter === 'bitter' && !item.estilo.toLowerCase().includes('bitter')) return false;
+    if (activeQuickFilter === 'ipa' && item.familia !== 'IPA & Lupuladas') return false;
+    if (activeQuickFilter === 'zero' && parseNum(item.abv) > 0.5) return false;
+
+    if (confVal && item.confrariaNome !== confVal) return false;
+    if (catVal && item.categoria !== catVal) return false;
+    if (famVal && item.familia !== famVal) return false;
+    if (estiloVal && item.estilo !== estiloVal) return false;
+
+    if (q) {
+      const matchText = `${item.cerveja} ${item.estilo} ${item.confrariaNome} ${item.responsavel} ${item.descricao} ${item.categoria}`.toLowerCase();
+      if (!matchText.includes(q)) return false;
+    }
+    return true;
+  });
+
+  if (sortVal === 'abv_desc') {
+    filtered.sort((a, b) => parseNum(b.item.abv) - parseNum(a.item.abv));
+  } else if (sortVal === 'abv_asc') {
+    filtered.sort((a, b) => {
+      const numA = parseNum(a.item.abv);
+      const numB = parseNum(b.item.abv);
+      if (numA < 0) return 1;
+      if (numB < 0) return -1;
+      return numA - numB;
+    });
+  } else if (sortVal === 'ibu_desc') {
+    filtered.sort((a, b) => parseNum(b.item.ibu) - parseNum(a.item.ibu));
+  } else if (sortVal === 'ibu_asc') {
+    filtered.sort((a, b) => {
+      const numA = parseNum(a.item.ibu);
+      const numB = parseNum(b.item.ibu);
+      if (numA < 0) return 1;
+      if (numB < 0) return -1;
+      return numA - numB;
+    });
+  }
+
+  renderGrid(filtered);
+  updateStats(filtered);
+};
+
+function renderGrid(filteredItems) {
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  const resultCount = document.getElementById('resultCount');
+  if (resultCount) {
+    resultCount.textContent = `Exibindo ${filteredItems.length} de ${DATA.length} cervejas`;
+  }
+
+  if (filteredItems.length === 0) {
+    grid.innerHTML = `<div class="empty">Nenhuma cerveja encontrada com os filtros selecionados.</div>`;
+    return;
+  }
+
+  filteredItems.forEach(({ item, index }) => {
+    const card = createCard(item, index);
+    grid.appendChild(card);
+  });
+}
+
+function createCard(item, index) {
+  const isFav = window.favorites.includes(index);
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.index = index;
+
+  card.innerHTML = `
+    <div class="stripe" style="--c: ${getFamilyColor(item.familia)}"></div>
+    <button class="fav" aria-pressed="${isFav}" title="Favoritar">⭐</button>
+    <div class="body">
+      <span class="tag" style="--c: ${getFamilyColor(item.familia)}">${item.categoria}</span>
+      <h3>${item.cerveja}</h3>
+      <div class="meta">
+        ${item.estilo} <br>
+        <strong>ABV:</strong> ${item.abv || 'N/I'} | 
+        <strong>IBU:</strong> ${item.ibu || 'N/I'} | 
+        <strong>EBC:</strong> ${item.ebc || 'N/I'}
+      </div>
+      <p class="desc">${item.descricao || 'Sem descrição cadastrada.'}</p>
+      <div class="owner"><strong>Responsável:</strong> ${item.responsavel} (${item.confraria})</div>
+    </div>
+  `;
+
+  card.querySelector('.fav').addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleFav(index);
+  });
+
+  card.addEventListener('click', () => openModal(item, index));
+  return card;
+}
+
+function openModal(item, index) {
+  currentModalIndex = index;
+  const mn = document.getElementById('mn');
+  const mdesc = document.getElementById('mdesc');
+  if (mn) mn.textContent = item.cerveja;
+  if (mdesc) mdesc.textContent = item.descricao || 'Sem descrição cadastrada.';
+
+  const detailsContainer = document.querySelector('.modal .details');
+  if (detailsContainer) {
+    detailsContainer.innerHTML = `
+      <div class="detail"><b>Confraria</b> ${item.confrariaNome}</div>
+      <div class="detail"><b>Categoria</b> ${item.categoria}</div>
+      <div class="detail"><b>Estilo</b> ${item.estilo}</div>
+      <div class="detail"><b>Família</b> ${item.familia}</div>
+      <div class="detail"><b>ABV</b> ${item.abv || 'Não informado'}</div>
+      <div class="detail"><b>IBU</b> ${item.ibu || 'Não informado'}</div>
+      <div class="detail"><b>EBC</b> ${item.ebc || 'Não informado'}</div>
+      <div class="detail"><b>Responsável</b> ${item.responsavel}</div>
+    `;
+  }
+
+  renderStars(window.ratings[index] || 0);
+
+  if (noteTextarea) {
+    noteTextarea.value = window.notes[index] || '';
+  }
+
+  if (modal) modal.classList.add('open');
+}
+
+function closeModal() {
+  if (modal) modal.classList.remove('open');
+  currentModalIndex = null;
+}
+
+function toggleFav(index) {
+  const i = window.favorites.indexOf(index);
+  if (i > -1) {
+    window.favorites.splice(i, 1);
+    showToast('Removido dos favoritos');
+  } else {
+    window.favorites.push(index);
+    showToast('Adicionado aos favoritos! ⭐');
+  }
+  
+  if (window.syncPreferencesToCloud) {
+    window.syncPreferencesToCloud();
+  } else {
+    localStorage.setItem('fdcrj_favs', JSON.stringify(window.favorites));
+  }
+  window.filterData();
+}
+
+function renderStars(rating) {
+  if (!starsContainer) return;
+  starsContainer.innerHTML = '';
+  for (let i = 1; i <= 5; i++) {
+    const btn = document.createElement('button');
+    btn.className = `star ${i <= rating ? 'on' : ''}`;
+    btn.textContent = '★';
+    btn.type = 'button';
+    btn.addEventListener('click', () => setRating(i));
+    starsContainer.appendChild(btn);
+  }
+}
+
+function setRating(r) {
+  if (currentModalIndex === null) return;
+  window.ratings[currentModalIndex] = r;
+  
+  if (window.syncPreferencesToCloud) {
+    window.syncPreferencesToCloud();
+  } else {
+    localStorage.setItem('fdcrj_ratings', JSON.stringify(window.ratings));
+  }
+  
+  renderStars(r);
+  showToast(`Avaliado com ${r} estrela(s)!`);
+}
+
+if (noteTextarea) {
+  noteTextarea.addEventListener('input', () => {
+    if (currentModalIndex === null) return;
+    window.notes[currentModalIndex] = noteTextarea.value;
+    
+    if (window.syncPreferencesToCloud) {
+      window.syncPreferencesToCloud();
+    } else {
+      localStorage.setItem('fdcrj_notes', JSON.stringify(window.notes));
+    }
+  });
+}
+
+function updateStats(filtered) {
+  const sBeers = document.getElementById('sBeers');
+  const sConf = document.getElementById('sConf');
+  const sStyles = document.getElementById('sStyles');
+  const sFav = document.getElementById('sFav');
+
+  if (sBeers) sBeers.textContent = filtered.length;
+  if (sConf) sConf.textContent = new Set(filtered.map(f => f.item.confrariaNome)).size;
+  if (sStyles) sStyles.textContent = new Set(filtered.map(f => f.item.estilo)).size;
+  if (sFav) sFav.textContent = window.favorites.length;
+}
+
+window.showToast = function(msg) {
+  let toast = document.querySelector('.toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.className = 'toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  initFilters();
+  window.filterData();
+
+  if (searchInput) searchInput.addEventListener('input', window.filterData);
+  if (selConf) selConf.addEventListener('change', window.filterData);
+  if (selCat) selCat.addEventListener('change', window.filterData);
+  if (selFam) selFam.addEventListener('change', window.filterData);
+  if (selEstilo) selEstilo.addEventListener('change', window.filterData);
+  if (selSort) selSort.addEventListener('change', window.filterData);
+
+  const btnClear = document.getElementById('btnClear');
+  if (btnClear) {
+    btnClear.addEventListener('click', () => {
+      if (searchInput) searchInput.value = '';
+      if (selConf) selConf.value = '';
+      if (selCat) selCat.value = '';
+      if (selFam) selFam.value = '';
+      if (selEstilo) selEstilo.value = '';
+      if (selSort) selSort.value = '';
+      activeQuickFilter = null;
+      document.querySelectorAll('.pill').forEach(p => p.setAttribute('aria-pressed', 'false'));
+      window.filterData();
+    });
+  }
+
+  document.querySelectorAll('.pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const type = pill.dataset.filter;
+      if (activeQuickFilter === type) {
+        activeQuickFilter = null;
+        pill.setAttribute('aria-pressed', 'false');
+      } else {
+        document.querySelectorAll('.pill').forEach(p => p.setAttribute('aria-pressed', 'false'));
+        activeQuickFilter = type;
+        pill.setAttribute('aria-pressed', 'true');
+      }
+      window.filterData();
+    });
+  });
+
+  if (btnCloseModal) btnCloseModal.addEventListener('click', closeModal);
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  }
+});
+</script>
+
+<!-- Módulo Firebase v10 para Login Google e Sincronização em Nuvem -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  // Cole aqui suas credenciais do Firebase Console
+  const firebaseConfig = {
+    apiKey: "SUA_API_KEY_AQUI",
+    authDomain: "seu-projeto.firebaseapp.com",
+    projectId: "seu-projeto-id",
+    storageBucket: "seu-projeto.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "1:123456789:web:abcdef"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const provider = new GoogleAuthProvider();
+
+  const authBtn = document.getElementById('googleAuthBtn');
+  const userInfo = document.getElementById('userInfo');
+  let currentUser = null;
+
+  // Função Global de Sincronização com o Firestore
+  window.syncPreferencesToCloud = async function() {
+    localStorage.setItem('fdcrj_favs', JSON.stringify(window.favorites || []));
+    localStorage.setItem('fdcrj_ratings', JSON.stringify(window.ratings || {}));
+    localStorage.setItem('fdcrj_notes', JSON.stringify(window.notes || {}));
+
+    if (currentUser) {
+      try {
+        await setDoc(doc(db, "users", currentUser.uid), {
+          favorites: window.favorites || [],
+          ratings: window.ratings || {},
+          notes: window.notes || {},
+          updatedAt: new Date().toISOString()
+        }, { merge: true });
+      } catch (err) {
+        console.error("Erro ao sincronizar com Firebase:", err);
+      }
+    }
+  };
+
+  async function loadUserPreferences(user) {
+    try {
+      const userRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(userRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.favorites) window.favorites = data.favorites;
+        if (data.ratings) window.ratings = data.ratings;
+        if (data.notes) window.notes = data.notes;
+
+        localStorage.setItem('fdcrj_favs', JSON.stringify(window.favorites));
+        localStorage.setItem('fdcrj_ratings', JSON.stringify(window.ratings));
+        localStorage.setItem('fdcrj_notes', JSON.stringify(window.notes));
+
+        if (typeof window.filterData === 'function') window.filterData();
+        if (typeof window.showToast === 'function') window.showToast("Dados sincronizados da nuvem! ☁️");
+      } else {
+        // Se é o primeiro login, sobe o que estava no localStorage
+        window.syncPreferencesToCloud();
+      }
+    } catch (err) {
+      console.error("Erro ao carregar dados do usuário:", err);
+    }
+  }
+
+  onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    if (user) {
+      if (authBtn) authBtn.innerHTML = "🚪 Sair";
+      if (userInfo) {
+        userInfo.style.display = "block";
+        userInfo.innerHTML = `Conectado como: <strong>${user.displayName || user.email}</strong>`;
+      }
+      loadUserPreferences(user);
+    } else {
+      if (authBtn) authBtn.innerHTML = "🔑 Entrar com Google";
+      if (userInfo) userInfo.style.display = "none";
+    }
+  });
+
+  if (authBtn) {
+    authBtn.addEventListener('click', async () => {
+      if (currentUser) {
+        await signOut(auth);
+        if (typeof window.showToast === 'function') window.showToast("Sessão encerrada");
+      } else {
+        try {
+          await signInWithPopup(auth, provider);
+        } catch (err) {
+          console.error("Erro ao autenticar com o Google:", err);
+        }
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
